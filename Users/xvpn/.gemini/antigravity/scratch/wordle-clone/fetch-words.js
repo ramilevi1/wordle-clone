@@ -21,16 +21,18 @@ Promise.all([fetchWords(answersUrl), fetchWords(allowedUrl)])
     .then(([answersData, allowedData]) => {
         console.log('Fetched data lengths:', answersData.length, allowedData.length);
 
-        const answers = answersData.split(/\r?\n/).filter(w => w.length === 5 && /^[a-z]+$/.test(w));
-        const allowed = allowedData.split(/\r?\n/).filter(w => w.length === 5 && /^[a-z]+$/.test(w));
+        const answers = answersData.split(/\r?\n/).filter(w => w.length === 5 && /^[a-z]+$/.test(w)).sort();
+        const allowed = allowedData.split(/\r?\n/).filter(w => w.length === 5 && /^[a-z]+$/.test(w)).sort();
 
         console.log('Parsed words:', answers.length, allowed.length);
 
-        // Combine and deduplicate
-        const allWords = [...new Set([...answers, ...allowed])].sort();
+        // VALID_GUESSES includes both answers and allowed words
+        const validGuesses = [...new Set([...answers, ...allowed])].sort();
 
-        const fileContent = `export const WORDS = ${JSON.stringify(allWords, null, 2)};`;
+        const fileContent = `export const SOLUTIONS = ${JSON.stringify(answers, null, 2)};
+export const VALID_GUESSES = ${JSON.stringify(validGuesses, null, 2)};
+`;
         fs.writeFileSync(outputPath, fileContent);
-        console.log(`Successfully wrote ${allWords.length} words to ${outputPath}`);
+        console.log(`Successfully wrote ${answers.length} solutions and ${validGuesses.length} valid guesses to ${outputPath}`);
     })
     .catch(err => console.error('Error updating word list:', err));

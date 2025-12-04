@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { WORDS } from '../data/words';
+import { VALID_GUESSES } from '../data/words';
 
 const useWordle = (solution) => {
     const [turn, setTurn] = useState(0);
@@ -123,7 +123,7 @@ const useWordle = (solution) => {
                 return;
             }
             // check word is valid
-            if (!WORDS.includes(currentGuess.toLowerCase())) {
+            if (!VALID_GUESSES.includes(currentGuess.toLowerCase())) {
                 console.log('word is not in word list');
                 return;
             }

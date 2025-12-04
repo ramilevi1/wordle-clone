@@ -3,7 +3,7 @@ import useWordle from './hooks/useWordle';
 import Grid from './components/Grid';
 import Keyboard from './components/Keyboard';
 import Modal from './components/Modal';
-import { WORDS } from './data/words';
+import { SOLUTIONS } from './data/words';
 
 function App() {
   const [solution, setSolution] = useState(null);
@@ -11,7 +11,7 @@ function App() {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    const random = WORDS[Math.floor(Math.random() * WORDS.length)];
+    const random = SOLUTIONS[Math.floor(Math.random() * SOLUTIONS.length)];
     setSolution(random);
   }, []);
 
